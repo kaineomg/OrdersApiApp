@@ -11,7 +11,7 @@ namespace OrdersApiAppPV012.Service.ClientService
 
         public DbDaoClient(ApplicationDbContext db)
         {
-            // db прилетает через инъекцию зависимостей
+            
             this.db = db;
         }
 
@@ -21,27 +21,41 @@ namespace OrdersApiAppPV012.Service.ClientService
             await db.Clients.AddAsync(client);
             db.SaveChanges();
             return client;
+           
         }
 
-        public Task<bool> DeleteClient(int id)
+        public async Task<bool> DeleteClient(int id)
         {
-            throw new NotImplementedException();
+            Client client = await db.Clients.FirstOrDefaultAsync(p => p.Id == id);
+
+            if(client!=null)
+            {
+                db.Clients.Remove(client);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         // получение всех клиентов
         public async Task<List<Client>> GetAllClients()
         {
+            db.Clients.Load();
             return await db.Clients.ToListAsync();
         }
 
-        public Task<Client> GetClientById(int id)
+        public async Task<Client> GetClientById(int id)
         {
-            throw new NotImplementedException();
+            
+            return await db.Clients.FirstOrDefaultAsync(p => p.Id == id);
+         
         }
 
-        public Task<Client> UpdateClient(Client client)
+        public async Task<Client> UpdateClient(Client client)
         {
-            throw new NotImplementedException();
+            db.Clients.Update(client);
+            await db.SaveChangesAsync();
+            return client;
         }
     }
 }

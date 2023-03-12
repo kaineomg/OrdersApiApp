@@ -15,55 +15,46 @@ namespace OrdersApiAppPV012.Service.OrderService
             this.db = db;
         }
 
-        // добавление нового клиента
+        // добавление нового ордера
         public async Task<Order> AddOrder(Order order)
         {
             await db.Orders.AddAsync(order);
             db.SaveChanges();
             return order;
         }
-
-        public Task<bool> DeleteOrder(int id)
+        //удаление ордера
+        public async Task<bool> DeleteOrder(int id)
         {
-            throw new NotImplementedException();
+            Order order = await db.Orders.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (order != null)
+            {
+                db.Orders.Remove(order);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public Task<List<Order>> GetAllOrder()
-        {
-            throw new NotImplementedException();
-        }
-
-        // получение всех клиентов
+        // получение всех ордеров
         public async Task<List<Order>> GetAllOrders()
         {
             db.Orders.Load();
             return await db.Orders.ToListAsync();
         }
-
-        public Task<Client> GetOrderById(int id)
+        // получение ордера по id
+        public async Task<Order> GetOrderById(int id)
         {
-            throw new NotImplementedException();
+            return await db.Orders.FirstOrDefaultAsync(p => p.Id == id);
+        }
+        //обновление ордера
+        public async Task<Order> UpdateOrder(Order order)
+        {
+            db.Orders.Update(order);
+            await db.SaveChangesAsync();
+            return order;
         }
 
-        public Task<Client> UpdateOrder(Client client)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Order> UpdateOrder(Order order)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Order> IDaoOrder.AddOrder(Order order)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Order> IDaoOrder.GetOrderById(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
