@@ -17,7 +17,7 @@ app.MapGet("/", () => "Hello World!");
 
 // тестирование операций с таблицей клиента
 
-app.MapGet("/client/all", async (HttpContext context, IDaoClient dao) =>
+app.MapGet("/clients/all", async (HttpContext context, IDaoClient dao) =>
 {
     return await dao.GetAllClients();
 });
