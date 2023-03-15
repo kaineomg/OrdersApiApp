@@ -18,7 +18,7 @@ builder.Services.AddTransient<IDaoOrderProduct, DbDaoOrderProduct>();
 var app = builder.Build();
 
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "ѕривет World!");
 
 // тестирование операций с таблицей клиента
 

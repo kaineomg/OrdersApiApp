@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  ordersapiapppv012:
+    container_name: application
+    image: ${DOCKER_REGISTRY-}ordersapiapppv012
+    ports:
+      - 5005:443 
+      - 8008:80
+    build:
+      context: .
+      dockerfile: OrdersApiAppPV012/Dockerfile
+    networks:
+      - internal
+
+
+  database:
+    image: postgres:latest
+    container_name: db_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - internal
+
+  
+networks:
+  internal:
+    driver: bridge
