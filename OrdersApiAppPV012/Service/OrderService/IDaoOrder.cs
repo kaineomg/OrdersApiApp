@@ -6,7 +6,7 @@ namespace OrdersApiAppPV012.Service.OrderService
     {
 
         
-        Task<List<Order>> GetAllOrder();
+        Task<List<Order>> GetAllOrders();
         Task<Order> GetOrderById(int id);
         Task<Order> AddOrder(Order order);
         Task<Order> UpdateOrder(Order order);
