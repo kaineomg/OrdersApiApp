@@ -5,7 +5,7 @@ using OrdersApiAppPV012.Model.Entity;
 namespace OrdersApiAppPV012.Service.ClientService
 {
     // имплементация dao, работающая с БД
-    public class DbDaoClient : IDaoClient
+    public class DbDaoClient : IDao<Client>
     {
         private readonly ApplicationDbContext db;   // entity manager для работы с данными
 
@@ -16,7 +16,7 @@ namespace OrdersApiAppPV012.Service.ClientService
         }
 
         // добавление нового клиента
-        public async Task<Client> AddClient(Client client)
+        public async Task<Client> Add(Client client)
         {
             await db.Clients.AddAsync(client);
             db.SaveChanges();
@@ -24,7 +24,7 @@ namespace OrdersApiAppPV012.Service.ClientService
            
         }
 
-        public async Task<bool> DeleteClient(int id)
+        public async Task<bool> Delete(int id)
         {
             Client client = await db.Clients.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -38,20 +38,20 @@ namespace OrdersApiAppPV012.Service.ClientService
         }
 
         // получение всех клиентов
-        public async Task<List<Client>> GetAllClients()
+        public async Task<List<Client>> GetAll()
         {
             db.Clients.Load();
             return await db.Clients.ToListAsync();
         }
 
-        public async Task<Client> GetClientById(int id)
+        public async Task<Client> GetById(int id)
         {
             
             return await db.Clients.FirstOrDefaultAsync(p => p.Id == id);
          
         }
 
-        public async Task<Client> UpdateClient(Client client)
+        public async Task<Client> Update(Client client)
         {
             db.Clients.Update(client);
             await db.SaveChangesAsync();

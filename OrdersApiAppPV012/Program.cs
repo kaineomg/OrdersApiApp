@@ -1,5 +1,6 @@
 using OrdersApiAppPV012.Model;
 using OrdersApiAppPV012.Model.Entity;
+using OrdersApiAppPV012.Service;
 using OrdersApiAppPV012.Service.ClientService;
 using OrdersApiAppPV012.Service.OrderProductService;
 using OrdersApiAppPV012.Service.OrderService;
@@ -9,10 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // добавление зависимостей
 builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddTransient<IDaoClient, DbDaoClient>();
-builder.Services.AddTransient<IDaoOrder,DbDaoOrder>();
-builder.Services.AddTransient<IDaoProduct, DbDaoProduct>();
-builder.Services.AddTransient<IDaoOrderProduct, DbDaoOrderProduct>();
+builder.Services.AddTransient<IDao<Client>, DbDaoClient>();
+builder.Services.AddTransient<IDao<Order>,DbDaoOrder>();
+builder.Services.AddTransient<IDao<Product>, DbDaoProduct>();
+builder.Services.AddTransient<IDao<OrderProduct>, DbDaoOrderProduct>();
 
 
 var app = builder.Build();
@@ -22,40 +23,40 @@ app.MapGet("/", () => "Привет World!");
 
 // тестирование операций с таблицей клиента
 
-app.MapGet("/client/all", async (HttpContext context, IDaoClient dao) =>
+app.MapGet("/client/all", async (HttpContext context, IDao<Client> dao) =>
 {
-    return await dao.GetAllClients();
+    return await dao.GetAll();
 });
 
-app.MapPost("/client/add", async (HttpContext context, Client client, IDaoClient dao) =>
+app.MapPost("/client/add", async (HttpContext context, Client client, IDao<Client> dao) =>
 {
-    return await dao.AddClient(client);
+    return await dao.Add(client);
 });
-app.MapGet("/client/get", async (HttpContext context, IDaoClient dao, int id) =>
+app.MapGet("/client/get", async (HttpContext context, IDao<Client> dao, int id) =>
 {
-    return await dao.GetClientById(id);
+    return await dao.GetById(id);
 });
-app.MapPost("/client/update", async (HttpContext context, Client client, IDaoClient dao) =>
+app.MapPost("/client/update", async (HttpContext context, Client client, IDao<Client> dao) =>
 {
-    return await dao.UpdateClient(client);
+    return await dao.Update(client);
 });
-app.MapPost("/client/delete", async (HttpContext context, IDaoClient dao, int id) =>
+app.MapPost("/client/delete", async (HttpContext context, IDao<Client> dao, int id) =>
 {
-    return await dao.DeleteClient(id);
+    return await dao.Delete(id);
 });
 
 
 
 
 //ордеры 
-app.MapGet("/order/all", async (HttpContext context, IDaoOrder dao) =>
+app.MapGet("/order/all", async (HttpContext context, IDao<Order> dao) =>
 {
-    return await dao.GetAllOrders();
+    return await dao.GetAll();
 });
 
-app.MapPost("/order/add", async (HttpContext context, Order order, IDaoOrder dao) =>
+app.MapPost("/order/add", async (HttpContext context, Order order, IDao<Order> dao) =>
 {
-    return await dao.AddOrder(order);
+    return await dao.Add(order);
 });
 
 
