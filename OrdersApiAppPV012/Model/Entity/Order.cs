@@ -18,6 +18,14 @@ namespace OrdersApiAppPV012.Model.Entity
             Description = "";
         }
 
+        public Order(int id, string? description, int clientId, Client client)
+        {
+            Id = id;
+            Description = description;
+            ClientId = clientId;
+            Client = client;
+        }
+
         public override string ToString()
         {
             return $"{Id} - {Description} - {ClientId}";

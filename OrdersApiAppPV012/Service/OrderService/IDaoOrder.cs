@@ -1,15 +1,12 @@
-﻿using OrdersApiAppPV012.Model.Entity;       
+﻿using OrdersApiAppPV012.Model.Entity;
 
 namespace OrdersApiAppPV012.Service.OrderService
 {
-    public interface IDaoOrder
+    public interface IDaoOrder : IDao<Order>
     {
-
-        
         Task<List<Order>> GetAllOrders();
-        Task<Order> GetOrderById(int id);
-        Task<Order> AddOrder(Order order);
-        Task<Order> UpdateOrder(Order order);
-        Task<bool> DeleteOrder(int id);
+        Task<Order> GetFullOrderById(int id);
     }
+
+
 }

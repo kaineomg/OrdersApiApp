@@ -5,7 +5,7 @@ using OrdersApiAppPV012.Service.OrderProductService;
 
 namespace OrdersApiAppPV012.Service.OrderProductService
 {
-    public class DbDaoOrderProduct : IDaoOrderProduct
+    public class DbDaoOrderProduct : IDao<OrderProduct>
     {
         private readonly ApplicationDbContext db;   // entity manager для работы с данными
 
@@ -18,14 +18,14 @@ namespace OrdersApiAppPV012.Service.OrderProductService
 
 
 
-        public async Task<OrderProduct> AddOrderProduct(OrderProduct orderProduct)
+        public async Task<OrderProduct> Add(OrderProduct orderProduct)
         {
             await db.OrderProducts.AddAsync(orderProduct);
             db.SaveChanges();
             return orderProduct;
         }
 
-        public async Task<bool> DeleteOrderProduct(int id)
+        public async Task<bool> Delete(int id)
         {
             OrderProduct orderProduct = await db.OrderProducts.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -38,18 +38,18 @@ namespace OrdersApiAppPV012.Service.OrderProductService
             return false;
         }
 
-        public async Task<List<OrderProduct>> GetAllOrderProducts()
+        public async Task<List<OrderProduct>> GetAll()
         {
             db.OrderProducts.Load();
             return await db.OrderProducts.ToListAsync();
         }
 
-        public async Task<OrderProduct> GetOrderProductById(int id)
+        public async Task<OrderProduct> GetById(int id)
         {
             return await db.OrderProducts.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<OrderProduct> UpdateOrderProduct(OrderProduct orderProduct)
+        public async Task<OrderProduct> Update(OrderProduct orderProduct)
         {
             db.OrderProducts.Update(orderProduct);
             await db.SaveChangesAsync();

@@ -16,14 +16,15 @@ namespace OrdersApiAppPV012.Service.OrderService
         }
 
         // добавление нового ордера
-        public async Task<Order> AddOrder(Order order)
+        public async Task<Order> Add(Order order)
         {
+           
             await db.Orders.AddAsync(order);
             db.SaveChanges();
             return order;
         }
         //удаление ордера
-        public async Task<bool> DeleteOrder(int id)
+        public async Task<bool> Delete(int id)
         {
             Order order = await db.Orders.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -37,23 +38,45 @@ namespace OrdersApiAppPV012.Service.OrderService
         }
 
         // получение всех ордеров
-        public async Task<List<Order>> GetAllOrders()
+        public async Task<List<Order>> GetAll()
         {
             db.Orders.Load();
             return await db.Orders.ToListAsync();
         }
+
+      
+
         // получение ордера по id
-        public async Task<Order> GetOrderById(int id)
+        public async Task<Order> GetById(int id)
         {
             return await db.Orders.FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        
+
         //обновление ордера
-        public async Task<Order> UpdateOrder(Order order)
+        public async Task<Order> Update(Order order)
         {
             db.Orders.Update(order);
             await db.SaveChangesAsync();
             return order;
         }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            db.Orders.Load();
+            return await db.Orders.ToListAsync();
+        }
+
+        public async Task<Order> GetFullOrderById(int id)
+        {
+            await db.OrderProducts.LoadAsync();
+            await db.Products.LoadAsync();
+            return await db.Orders.FirstOrDefaultAsync(or => or.Id == id);
+        }
+
+
+
 
     }
 
