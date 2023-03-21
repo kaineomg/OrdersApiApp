@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OrdersApiAppPV012.Service.OrderService
 {
-    public class DbDaoOrder:IDao<Order>
+    public class DbDaoOrder:IDaoOrder
     {
         private readonly ApplicationDbContext db;   // entity manager для работы с данными
 
@@ -18,6 +18,7 @@ namespace OrdersApiAppPV012.Service.OrderService
         // добавление нового ордера
         public async Task<Order> Add(Order order)
         {
+           
             await db.Orders.AddAsync(order);
             db.SaveChanges();
             return order;
@@ -42,11 +43,17 @@ namespace OrdersApiAppPV012.Service.OrderService
             db.Orders.Load();
             return await db.Orders.ToListAsync();
         }
+
+      
+
         // получение ордера по id
         public async Task<Order> GetById(int id)
         {
             return await db.Orders.FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        
+
         //обновление ордера
         public async Task<Order> Update(Order order)
         {
@@ -54,6 +61,22 @@ namespace OrdersApiAppPV012.Service.OrderService
             await db.SaveChangesAsync();
             return order;
         }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            db.Orders.Load();
+            return await db.Orders.ToListAsync();
+        }
+
+        public async Task<Order> GetFullOrderById(int id)
+        {
+            await db.OrderProducts.LoadAsync();
+            await db.Products.LoadAsync();
+            return await db.Orders.FirstOrDefaultAsync(or => or.Id == id);
+        }
+
+
+
 
     }
 
