@@ -14,10 +14,6 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
-
 // добавление зависимостей
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddTransient<IDao<Client>, DbDaoClient>();
@@ -68,9 +64,6 @@ app.Map("/login/{username}", ( string username) =>
 });
 
 app.Map("/data", [Authorize] () => new { message = "JWT Rabotaet" });
-
-
-
 
 app.MapGet("/", () => "Orders API");
 
