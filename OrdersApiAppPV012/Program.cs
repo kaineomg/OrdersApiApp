@@ -48,16 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
-}
-
-
-
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -76,7 +67,7 @@ app.Map("/login/{username}", ( string username) =>
     return new JwtSecurityTokenHandler().WriteToken(jwt);
 });
 
-app.Map("/data", [Authorize] () => new { message = "Hello World!" });
+app.Map("/data", [Authorize] () => new { message = "JWT Rabotaet" });
 
 
 
